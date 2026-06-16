@@ -1,0 +1,7 @@
+# Request: Mission Node 發送路徑代號
+string path_code
+
+---
+# Response: FSM Manager 回應是否成功查表並載入
+bool success
+string message    # 錯誤訊息（例如："找不到此路徑代號"）

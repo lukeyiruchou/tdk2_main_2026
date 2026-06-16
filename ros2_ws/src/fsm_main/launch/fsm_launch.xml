@@ -1,0 +1,10 @@
+<launch>
+  <node pkg="fsm_main" exec="mission_one_node" name="mission_one_node" output="screen">
+    </node>
+
+  <node pkg="fsm_main" exec="mission_two_node" name="mission_two_node" output="screen">
+  </node>
+
+  <node pkg="fsm_main" exec="main_ctrl_node" name="fsm_manager_node" output="screen">
+  </node>
+</launch>

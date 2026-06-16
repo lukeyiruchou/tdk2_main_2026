@@ -1,0 +1,16 @@
+# 1. Goal: 接收一連串帶有期望速度的路徑點
+interfaces/CustomWaypoint[] trajectory
+
+# 控制與加速度限制 (全域參數)
+float32 max_angular_speed
+float32 max_accel
+bool cruise_mode
+
+---
+# 2. Result
+bool success
+
+---
+# 3. Feedback
+float32 distance_to_end    # 距離整條軌跡終點還剩多少公尺
+uint32 current_waypoint_index # 目前正在追隨第幾個路徑點

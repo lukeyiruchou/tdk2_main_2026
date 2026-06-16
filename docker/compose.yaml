@@ -1,0 +1,30 @@
+name: ros2
+services:
+  ros2:
+    build:
+      context: .
+      args:
+        USERNAME: user
+    image: dit/ros2_tutorial:latest
+    container_name: ros2_tdk
+    stdin_open: true
+    tty: true
+    privileged: true
+    stop_grace_period: 1s
+
+    network_mode: host
+    working_dir: /home/user/ros_tdk
+    environment:
+      - DISPLAY=host.docker.internal:0.0cd
+      - XAUTHORITY=/root/.Xauthority
+      - ROS_WS=/home/user/ros_tdk/ros2_ws
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      # Mount X11 server
+      - /c/.Xauthority:/root/.Xauthority
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # Direct Rendering Infrastructure
+      - /dev:/dev
+      - ../:/home/user/ros_tdk
+    command: bash

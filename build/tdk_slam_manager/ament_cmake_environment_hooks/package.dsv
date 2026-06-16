@@ -1,0 +1,4 @@
+source;share/tdk_slam_manager/local_setup.bash
+source;share/tdk_slam_manager/local_setup.dsv
+source;share/tdk_slam_manager/local_setup.sh
+source;share/tdk_slam_manager/local_setup.zsh

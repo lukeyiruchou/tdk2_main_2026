@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<robot name="omni_planar_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- 1. 定義顏色材料 (僅供 Gazebo 與 Rviz 視覺化) -->
+  <material name="blue">
+    <color rgba="0.2 0.2 0.8 1.0"/>
+  </material>
+
+  <!-- 2. 世界原點虛擬連接點 (ROS 2 導航與模擬必備) -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <!-- 將實體離地抬高 5 公分，避免底盤沉入 Gazebo 地板 -->
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <!-- 3. 機器人主車體 (Base Link) -->
+  <link name="base_link">
+    <!-- 視覺外觀 -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <!-- 一個長 50cm、寬 40cm、高 15cm 的方塊底盤 -->
+        <box size="0.5 0.4 0.15"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <!-- 物理碰撞屬性 -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.5 0.4 0.15"/>
+      </geometry>
+    </collision>
+
+    <!-- 物理慣性矩 (質量、轉動慣量，Gazebo 引擎計算物理基礎) -->
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="15.0"/> <!-- 假設車重 15 公斤 -->
+      <inertia ixx="0.2281" ixy="0.0" ixz="0.0" 
+               iyy="0.3406" iyz="0.0" 
+               izz="0.5125"/>
+    </inertial>
+  </link>
+
+  <!-- 4. 核心：掛載萬能全向平面移動插件 -->
+  <gazebo>
+    <plugin name="omni_planar_move" filename="libgazebo_ros_planar_move.so">
+      <!-- 調整 ROS 2 命名空間，讓對接更穩固 -->
+      <ros>
+        <!-- 這裡直接做 Remap (重映射)，強迫把預設的 /cmd_vel 和 /odom 改成你的 /robot/... -->
+        <remapping>cmd_vel:=/robot/cmd_vel</remapping>
+        <remapping>odom:=/robot/pose</remapping>
+      </ros>
+
+      <!-- 更新頻率 -->
+      <update_rate>50.0</update_rate>
+
+      <!-- 綁定機器人的核心骨架（改用底層 footprint 或是 base_link） -->
+      <robot_base_frame>base_footprint</robot_base_frame>
+
+      <!-- 是否要發布 TF 轉換 (odom -> base_footprint) -->
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+
+      <!-- 座標系定義 -->
+      <odometry_frame>odom</odometry_frame>
+    </plugin>
+  </gazebo>
+
+</robot>
