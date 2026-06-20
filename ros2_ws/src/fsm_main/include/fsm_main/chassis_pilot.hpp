@@ -77,7 +77,7 @@ private:
     double min_v_{0.1};
     double min_w_{0.05};
     
-    double look_ahead_distance_{1.0};
+    double look_ahead_distance_{0.3};
 
     MoveStrategy strategy_{MoveStrategy::SMOOTH_STOP};
 };
