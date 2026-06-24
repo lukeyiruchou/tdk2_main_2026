@@ -184,33 +184,30 @@ void ChassisPilot::control_loop() {
     cmd.linear.x = v_final * std::cos(relative_dir);
     cmd.linear.y = v_final * std::sin(relative_dir);
 
-    // ---- 8. 角速度規劃 (具備加減速與終點煞車) ----
-    double w_limit = max_w_;
+    // ---- 8. 角速度規劃 (全時段純 Kp 比例控制，徹底拔除斜率與根號公式) ----
     
-    if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP && dist_to_goal_ < look_ahead_distance_) {
-        // ✨ 角速度同步修改：進入緩衝區後，直接拔掉角加速度限制
-        w_limit = std::clamp(1.0 * std::abs(yaw_to_goal_), 0.1, max_w_); // 最低維持 0.1 rad/s 的對正能力
-        double w_target = (yaw_to_goal_ > 0 ? 1.0 : -1.0) * w_limit;
-        
-        // 直接賦值，瞬間降轉速
-        last_w_cmd_ = w_target;
-    }
-    else {
-        // 遠距離的角速度控制與斜率限制
-        if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP) {
-            w_limit = std::sqrt(2.0 * max_ang_accel_ * std::abs(yaw_to_goal_));
-        }
-        w_limit = std::clamp(w_limit, 0.0, max_w_);
-        double w_target = (yaw_to_goal_ > 0 ? 1.0 : -1.0) * w_limit;
+    // 1. 設定你的比例增益與保底轉速（min_w_ 需大於 STM32 馬達死區）
+    double kp_yaw = 0.5;       // 角度 P 控制增益 (可依實車反應微調，通常設 2.0 ~ 3.5)
+    double max_w_limit = max_w_; // 轉速上限，直接採用當前點或 Action 帶入的限制
 
-        if (last_w_cmd_ < w_target) {
-            last_w_cmd_ = std::min(last_w_cmd_ + max_ang_accel_ * dt, w_target);
-        } else {
-            last_w_cmd_ = std::max(last_w_cmd_ - max_ang_accel_ * dt, w_target);
-        }
+    // 2. 計算純 P 控制的目標角速度
+    double w_target = kp_yaw * yaw_to_goal_;
+
+    // 3. 限制最高轉速上限
+    w_target = std::clamp(w_target, -max_w_limit, max_w_limit);
+
+    // 4. 終點死區與保底推力保護
+    if (std::abs(w_target) < min_w_ && std::abs(yaw_to_goal_) > yaw_tol_) {
+        // 如果還沒進容許誤差，但算出來的速度太小，強迫給予保底推力轉正
+        w_target = (yaw_to_goal_ > 0 ? 1.0 : -1.0) * min_w_;
     }
-    
-    cmd.angular.z = last_w_cmd_;
+    else if (std::abs(yaw_to_goal_) <= yaw_tol_) {
+        // 只要進到容許誤差內，立刻關斷輸出
+        w_target = 0.0;
+    }
+
+    cmd.angular.z = w_target;
+    last_w_cmd_ = w_target; // 同步狀態追蹤紀錄
 
     // 發布移動指令
     velocity_publisher_->publish(cmd);
