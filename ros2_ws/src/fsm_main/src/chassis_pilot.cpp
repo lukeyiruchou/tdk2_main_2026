@@ -76,7 +76,8 @@ void ChassisPilot::handle_accepted(const std::shared_ptr<GoalHandleNavi> goal_ha
 void ChassisPilot::control_loop() {          
     // ---- 1. 安全與失明防線 ----
     if (!current_goal_handle_) {
-        RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "卡關原因：沒有收到 Action 目標");
+        stop_robot(); 
+        RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "待機中：無 Action 目標，底盤鎖定。");
         return;
     }
 
@@ -142,24 +143,39 @@ void ChassisPilot::control_loop() {
     geometry_msgs::msg::Twist cmd;
 
     // ---- 6. 線速度規劃 (前視空間與期望速度融合) ----
-    double v_limit = max_v_;
-    if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP) {
-        // 只有在最後一個點的減速段，才激活原本的根號煞車公式
-        v_limit = std::sqrt(2.0 * max_accel_ * dist_to_goal_);
-    }
-    v_limit = std::clamp(v_limit, 0.0, max_v_);
+    double v_final = 0.0;
 
-    // 斜率限制限制（嚴格防震盪）
-    if (last_v_cmd_ < v_limit) {
-        last_v_cmd_ = std::min(last_v_cmd_ + max_accel_ * dt, v_limit);
-    } else {
-        last_v_cmd_ = std::max(last_v_cmd_ - max_accel_ * dt, v_limit);
-    }
+    if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP && dist_to_goal_ < look_ahead_distance_) {
+        // ✨ 修改：進入緩衝區後，徹底拔掉斜率控制！
+        // 依照距離給予低速 (P控制)，或者你也可以直接寫死 v_final = 0.1;
+        double kp_approach = 0.5; 
+        double approach_v = kp_approach * dist_to_goal_;
 
-    // 克服靜摩擦力之最低啟動保護
-    double v_final = last_v_cmd_;
-    if (v_final < min_v_ && v_limit > min_v_ && dist_to_goal_ > pos_tol_) {
-        v_final = min_v_;
+        // 限制在保底最低速度與最高速度之間
+        v_final = std::clamp(approach_v, min_v_, max_v_);
+        
+        // ⚠️ 關鍵：強制同步歷史指令，直接讓速度「斷崖式」降下來，不經過平滑濾波
+        last_v_cmd_ = v_final; 
+    } 
+    else {
+        // 遠距離或 CONTINUOUS 模式：執行原本的加速度與根號減速邏輯
+        double v_limit = max_v_;
+        if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP) {
+            v_limit = std::sqrt(2.0 * max_accel_ * dist_to_goal_);
+        }
+        v_limit = std::clamp(v_limit, 0.0, max_v_);
+
+        // 這裡依然保留遠距離的斜率限制，防止起步暴衝
+        if (last_v_cmd_ < v_limit) {
+            last_v_cmd_ = std::min(last_v_cmd_ + max_accel_ * dt, v_limit);
+        } else {
+            last_v_cmd_ = std::max(last_v_cmd_ - max_accel_ * dt, v_limit);
+        }
+
+        v_final = last_v_cmd_;
+        if (v_final < min_v_ && v_limit > min_v_ && dist_to_goal_ > pos_tol_) {
+            v_final = min_v_;
+        }
     }
 
     // ---- 7. 全向輪底盤速度向量分解 ----
@@ -170,19 +186,30 @@ void ChassisPilot::control_loop() {
 
     // ---- 8. 角速度規劃 (具備加減速與終點煞車) ----
     double w_limit = max_w_;
-    if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP) {
-        w_limit = std::sqrt(2.0 * max_ang_accel_ * std::abs(yaw_to_goal_));
+    
+    if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP && dist_to_goal_ < look_ahead_distance_) {
+        // ✨ 角速度同步修改：進入緩衝區後，直接拔掉角加速度限制
+        w_limit = std::clamp(1.0 * std::abs(yaw_to_goal_), 0.1, max_w_); // 最低維持 0.1 rad/s 的對正能力
+        double w_target = (yaw_to_goal_ > 0 ? 1.0 : -1.0) * w_limit;
+        
+        // 直接賦值，瞬間降轉速
+        last_w_cmd_ = w_target;
     }
-    w_limit = std::clamp(w_limit, 0.0, max_w_);
+    else {
+        // 遠距離的角速度控制與斜率限制
+        if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP) {
+            w_limit = std::sqrt(2.0 * max_ang_accel_ * std::abs(yaw_to_goal_));
+        }
+        w_limit = std::clamp(w_limit, 0.0, max_w_);
+        double w_target = (yaw_to_goal_ > 0 ? 1.0 : -1.0) * w_limit;
 
-    double w_target = (yaw_to_goal_ > 0 ? 1.0 : -1.0) * w_limit;
-
-    // 角加速度斜率限制
-    if (last_w_cmd_ < w_target) {
-        last_w_cmd_ = std::min(last_w_cmd_ + max_ang_accel_ * dt, w_target);
-    } else {
-        last_w_cmd_ = std::max(last_w_cmd_ - max_ang_accel_ * dt, w_target);
+        if (last_w_cmd_ < w_target) {
+            last_w_cmd_ = std::min(last_w_cmd_ + max_ang_accel_ * dt, w_target);
+        } else {
+            last_w_cmd_ = std::max(last_w_cmd_ - max_ang_accel_ * dt, w_target);
+        }
     }
+    
     cmd.angular.z = last_w_cmd_;
 
     // 發布移動指令
