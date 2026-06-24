@@ -116,7 +116,7 @@ protected:
         auto goal_msg = NaviGoal::Goal();
         goal_msg.trajectory = it->second;
         goal_msg.max_angular_speed = 1.0;
-        goal_msg.max_accel = 0.5;
+        goal_msg.max_accel = 0.2;
         goal_msg.cruise_mode = false;
 
         is_path_navigating_ = false;
