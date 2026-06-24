@@ -72,10 +72,10 @@ private:
     
     // 控制參數 (從 Action Goal 取得)
     double max_v_{4.0}, max_accel_{2.0};
-    double max_w_{0.3}, max_ang_accel_{0.5};
+    double max_w_{0.5}, max_ang_accel_{0.5};
     double pos_tol_{0.05}, yaw_tol_{0.05};
-    double min_v_{0.1};
-    double min_w_{0.05};
+    double min_v_{0.01};
+    double min_w_{0.01};
     
     double look_ahead_distance_{0.3};
 
