@@ -229,8 +229,8 @@ void ChassisPilot::control_loop() {
     current_goal_handle_->publish_feedback(feedback);
 
     RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
-        "追隨點: [%zu/%zu] | 剩餘總距: %.2f米 | 目前線速: %.2f", 
-        current_waypoint_idx_ + 1, trajectory_.size(), remaining_dist, v_final);
+        "追隨點: [%zu/%zu] | 剩餘總距: %.2f米 | 剩餘角度: %.2fRad | 目前線速: %.2f", 
+        current_waypoint_idx_ + 1, trajectory_.size(), remaining_dist, yaw_to_goal_, v_final);
 }
 
 void ChassisPilot::stop_robot() {
@@ -242,7 +242,7 @@ void ChassisPilot::stop_robot() {
 void ChassisPilot::update_state() {
     dist_to_goal_ = std::hypot(goal_x_ - x_, goal_y_ - y_);
     //yaw_to_goal_ = ang_norm(goal_yaw_ - yaw_);
-    yaw_to_goal_ = goal_yaw_ - yaw_;
+    yaw_to_goal_ = ang_norm(goal_yaw_ - yaw_);
 }
 
 double ChassisPilot::ang_norm(double a) {
