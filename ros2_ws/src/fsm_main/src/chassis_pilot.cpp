@@ -241,7 +241,8 @@ void ChassisPilot::stop_robot() {
 
 void ChassisPilot::update_state() {
     dist_to_goal_ = std::hypot(goal_x_ - x_, goal_y_ - y_);
-    yaw_to_goal_ = ang_norm(goal_yaw_ - yaw_);
+    //yaw_to_goal_ = ang_norm(goal_yaw_ - yaw_);
+    yaw_to_goal_ = goal_yaw_ - yaw_;
 }
 
 double ChassisPilot::ang_norm(double a) {
