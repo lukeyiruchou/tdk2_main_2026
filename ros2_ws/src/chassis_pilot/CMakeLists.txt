@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(interfaces)
+project(chassis_pilot)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -11,10 +11,13 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+
 find_package(rosidl_default_generators REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(nav_msgs REQUIRED)
 
-# 生成 Action 接口
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/CustomWaypoint.msg"
   "action/NaviGoal.action"
@@ -30,7 +33,21 @@ ament_target_dependencies(chassis_pilot_node
   geometry_msgs
   nav_msgs
   std_msgs
-  interfaces
+)
+rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
+add_dependencies(chassis_pilot_node ${cpp_typesupport_target})
+
+target_include_directories(chassis_pilot_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(chassis_pilot_node
+  ${cpp_typesupport_target}
+)
+
+install(TARGETS
+  chassis_pilot_node
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)

@@ -70,8 +70,33 @@ private:
                 RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
             } 
             else if(progress_ < 0.2){
-                progress_ += 0.2;
+                progress_ += 0.1;
                 move_along_path("PATH_3_2");
+                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+            }
+            else if(progress_ < 0.3){
+                progress_ += 0.1;
+                move_along_path("PATH_3_3");
+                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+            }
+            else if(progress_ < 0.4){
+                progress_ += 0.1;
+                move_along_path("PATH_3_4");
+                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+            }
+            else if(progress_ < 0.5){
+                progress_ += 0.1;
+                move_along_path("PATH_3_5");
+                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+            }
+            else if(progress_ < 0.6){
+                progress_ += 0.1;
+                move_along_path("PATH_3_6");
+                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+            }
+            else if(progress_ < 0.7){
+                progress_ += 0.1;
+                move_along_path("PATH_3_7");
                 RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
             }
             else if (progress_ < 1){

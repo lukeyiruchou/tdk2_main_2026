@@ -21,8 +21,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
-find_package(rclcpp_action REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(nav2_msgs REQUIRED)
 
 find_package(interfaces REQUIRED)
 
@@ -36,27 +36,27 @@ ament_target_dependencies(main_ctrl_node rclcpp std_msgs lifecycle_msgs)
 
 
 add_executable(mission_one_node src/mission_one.cpp)
-ament_target_dependencies(mission_one_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp)
+ament_target_dependencies(mission_one_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp nav2_msgs)
 target_link_libraries(mission_one_node ${YAML_CPP_LIBRARIES}) # ✨ 補上這行
 
 # ----- Mission 2 -----
 add_executable(mission_two_node src/mission_two.cpp)
-ament_target_dependencies(mission_two_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp)
+ament_target_dependencies(mission_two_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp nav2_msgs)
 target_link_libraries(mission_two_node ${YAML_CPP_LIBRARIES}) # ✨ 補上這行
 
 # ----- Mission 3 -----
 add_executable(mission_three_node src/mission_three.cpp)
-ament_target_dependencies(mission_three_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp)
+ament_target_dependencies(mission_three_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp nav2_msgs)
 target_link_libraries(mission_three_node ${YAML_CPP_LIBRARIES}) # ✨ 補上這行
 
 # ----- Mission 4 Front -----
 add_executable(mission_four_front_node src/mission_four_front.cpp)
-ament_target_dependencies(mission_four_front_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp)
+ament_target_dependencies(mission_four_front_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp nav2_msgs)
 target_link_libraries(mission_four_front_node ${YAML_CPP_LIBRARIES}) # ✨ 補上這行
 
 # ----- Mission 4 Back -----
 add_executable(mission_four_back_node src/mission_four_back.cpp)
-ament_target_dependencies(mission_four_back_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp)
+ament_target_dependencies(mission_four_back_node rclcpp rclcpp_lifecycle rclcpp_action interfaces ament_index_cpp nav2_msgs)
 target_link_libraries(mission_four_back_node ${YAML_CPP_LIBRARIES}) # ✨ 補上這行
 
 

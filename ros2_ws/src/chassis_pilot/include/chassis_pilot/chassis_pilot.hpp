@@ -1,5 +1,5 @@
-#ifndef FSM_MAIN__CHASSIS_PILOT_HPP_
-#define FSM_MAIN__CHASSIS_PILOT_HPP_
+#ifndef CHASSIS_PILOT__CHASSIS_PILOT_HPP_
+#define CHASSIS_PILOT__CHASSIS_PILOT_HPP_
 
 #include <cmath>
 #include <algorithm>
@@ -11,8 +11,8 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav_msgs/msg/odometry.hpp"
-#include "interfaces/action/navi_goal.hpp"
-#include "interfaces/msg/custom_waypoint.hpp"
+#include "chassis_pilot/action/navi_goal.hpp"
+#include "chassis_pilot/msg/custom_waypoint.hpp"
 
 using namespace std::chrono_literals;
 
@@ -24,7 +24,7 @@ enum class MoveStrategy {
 
 class ChassisPilot : public rclcpp::Node {
 public:
-    using NaviGoal = interfaces::action::NaviGoal;
+    using NaviGoal = chassis_pilot::action::NaviGoal;
     using GoalHandleNavi = rclcpp_action::ServerGoalHandle<NaviGoal>;
 
     explicit ChassisPilot(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
@@ -62,7 +62,7 @@ private:
     // 目標與策略變數
     std::shared_ptr<GoalHandleNavi> current_goal_handle_;
 
-    std::vector<interfaces::msg::CustomWaypoint> trajectory_; // 儲存整條平滑軌跡
+    std::vector<chassis_pilot::msg::CustomWaypoint> trajectory_; // 儲存整條平滑軌跡
     size_t current_waypoint_idx_{0};
 
 

@@ -1,4 +1,4 @@
-#include "fsm_main/chassis_pilot.hpp"
+#include "chassis_pilot/chassis_pilot.hpp"
 
 ChassisPilot::ChassisPilot(const rclcpp::NodeOptions & options) 
 : Node("chassis_pilot", options) {
