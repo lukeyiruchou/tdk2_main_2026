@@ -13,6 +13,10 @@ find_package(ament_cmake REQUIRED)
 
 find_package(rosidl_default_generators REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
 
 # 生成 Action 接口
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -21,17 +25,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES geometry_msgs
 )
 
-add_executable(chassis_pilot_node 
-  src/chassis_pilot.cpp
-)
-ament_target_dependencies(chassis_pilot_node
-  rclcpp
-  rclcpp_action
-  geometry_msgs
-  nav_msgs
-  std_msgs
-  interfaces
-)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

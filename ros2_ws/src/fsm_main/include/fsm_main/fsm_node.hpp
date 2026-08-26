@@ -348,7 +348,7 @@ private:
     {
         RCLCPP_INFO_THROTTLE(get_logger(), *this->get_clock(), 1500, 
             "Nav2 回傳進度 -> 剩餘路徑點數: %d, 已行駛距離: %.2f 米", 
-            feedback->number_of_poses_remaining, feedback->distance_traveled);
+            feedback->number_of_poses_remaining, feedback->distance_remaining);
     }
 
     void nav2_result_callback(const GoalHandleNav2::WrappedResult & result) {

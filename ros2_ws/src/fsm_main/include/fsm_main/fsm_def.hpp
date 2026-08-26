@@ -1,4 +1,4 @@
-#ifndef FSM_MAIN__FSM_DEF_HPP_
+    #ifndef FSM_MAIN__FSM_DEF_HPP_
 #define FSM_MAIN__FSM_DEF_HPP_
 
 #include <memory>
