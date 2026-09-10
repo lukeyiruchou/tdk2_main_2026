@@ -20,8 +20,8 @@
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
 // 引入你的自定義動作與訊息型態
-#include "interfaces/action/navi_goal.hpp"
-#include "interfaces/msg/custom_waypoint.hpp"
+#include "chassis_pilot/action/navi_goal.hpp"
+#include "chassis_pilot/msg/custom_waypoint.hpp"
 
 // Nav2 導航所需的 Action 與訊息型態
 #include "nav2_msgs/action/navigate_through_poses.hpp"
@@ -31,7 +31,7 @@ using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface
 
 class BaseStateNode : public rclcpp_lifecycle::LifecycleNode {
 public:
-    using NaviGoal = interfaces::action::NaviGoal;
+    using NaviGoal = chassis_pilot::action::NaviGoal;
     using GoalHandleNavi = rclcpp_action::ClientGoalHandle<NaviGoal>;
 
     using NavigateThroughPoses = nav2_msgs::action::NavigateThroughPoses;
@@ -179,13 +179,13 @@ private:
     // 每條路徑的資訊：要用哪種規劃器 + 路徑點
     struct PathInfo {
         PlannerType planner{PlannerType::CHASSIS_PILOT};
-        std::vector<interfaces::msg::CustomWaypoint> waypoints;
+        std::vector<chassis_pilot::msg::CustomWaypoint> waypoints;
     };
 
     // ---------- chassis_pilot 導航實作 ----------
     void move_via_chassis_pilot(
         const std::string & path_name,
-        const std::vector<interfaces::msg::CustomWaypoint> & waypoints) 
+        const std::vector<chassis_pilot::msg::CustomWaypoint> & waypoints) 
     {
         if (!action_client_->wait_for_action_server(std::chrono::seconds(2))) {
             RCLCPP_ERROR(get_logger(), "底盤 Action 伺服器 (/navi_goal) 未上線！");
@@ -213,7 +213,7 @@ private:
     // ---------- nav2 導航實作 ----------
     void move_via_nav2(
         const std::string & path_name,
-        const std::vector<interfaces::msg::CustomWaypoint> & waypoints)
+        const std::vector<chassis_pilot::msg::CustomWaypoint> & waypoints)
     {
         if (!nav2_action_client_->wait_for_action_server(std::chrono::seconds(2))) {
             RCLCPP_ERROR(get_logger(), "Nav2 Action 伺服器 (/navigate_through_poses) 未上線！");
@@ -286,7 +286,7 @@ private:
                 }
 
                 for (size_t i = 0; i < points_node.size(); ++i) {
-                    interfaces::msg::CustomWaypoint wp;
+                    chassis_pilot::msg::CustomWaypoint wp;
                     wp.x = points_node[i]["x"].as<float>();
                     wp.y = points_node[i]["y"].as<float>();
                     wp.yaw = points_node[i]["yaw"].as<float>();
