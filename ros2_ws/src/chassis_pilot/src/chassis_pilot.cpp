@@ -174,7 +174,7 @@ void ChassisPilot::control_loop() {
 
     if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP && dist_to_goal_ < look_ahead_distance_) {
         // 進入緩衝區後，依照距離給予低速 (P控制)
-        double kp_approach = 2.0; 
+        double kp_approach = 0.5; 
         double approach_v = kp_approach * dist_to_goal_;
 
         // 限制在保底最低速度與最高速度之間
@@ -245,8 +245,8 @@ void ChassisPilot::control_loop() {
     current_goal_handle_->publish_feedback(feedback);
 
     RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
-        "追隨點: [%zu/%zu] | 座標: %.2f,%.2f | 剩餘角度: %.2fRad | 目前線速: %.2f", 
-        current_waypoint_idx_ + 1, trajectory_.size(), x_, y_, yaw_to_goal_, v_final);
+        "追隨點: [%zu/%zu] | 座標: %.2f,%.2f | 剩餘角度: %.2fRad | 目前線速: %.2f,%.2f", 
+        current_waypoint_idx_ + 1, trajectory_.size(), x_, y_, yaw_to_goal_, cmd.linear.x, cmd.linear.y);
 }
 
 void ChassisPilot::stop_robot() {
