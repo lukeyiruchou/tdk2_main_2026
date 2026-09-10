@@ -1,13 +1,17 @@
 #include "chassis_pilot/chassis_pilot.hpp"
 
+#include <tf2/exceptions.h>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+
+using namespace std::chrono_literals;
+
 ChassisPilot::ChassisPilot(const rclcpp::NodeOptions & options) 
 : Node("chassis_pilot", options) {
     velocity_publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
-    position_subscriber_ = this->create_subscription<nav_msgs::msg::Odometry>(
-        "/odom", 
-        rclcpp::SensorDataQoS(), 
-        std::bind(&ChassisPilot::position_callback, this, std::placeholders::_1)
-    );
+
+    // 初始化 TF2 Buffer 與 Listener
+    tf_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
+    tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 
     action_server_ = rclcpp_action::create_server<NaviGoal>(
         this, "navi_goal",
@@ -16,7 +20,7 @@ ChassisPilot::ChassisPilot(const rclcpp::NodeOptions & options)
         std::bind(&ChassisPilot::handle_accepted, this, std::placeholders::_1)
     );
 
-    RCLCPP_INFO(this->get_logger(), "Chassis Pilot 已成功啟動！");
+    RCLCPP_INFO(this->get_logger(), "Chassis Pilot 已成功啟動！(座標系: world -> base_footprint)");
 
     // 50Hz 控制頻率
     timer_ = this->create_wall_timer(20ms, std::bind(&ChassisPilot::control_loop, this));
@@ -73,6 +77,27 @@ void ChassisPilot::handle_accepted(const std::shared_ptr<GoalHandleNavi> goal_ha
                 (strategy_ == MoveStrategy::CONTINUOUS ? "CONTINUOUS" : "SMOOTH_STOP"));
 }
 
+bool ChassisPilot::get_current_pose() {
+    geometry_msgs::msg::TransformStamped transform_stamped;
+    try {
+        // 查詢從 world 到 base_footprint 的最新位姿轉換
+        transform_stamped = tf_buffer_->lookupTransform(
+            "world", "base_footprint", tf2::TimePointZero);
+    } catch (const tf2::TransformException & ex) {
+        RCLCPP_WARN_THROTTLE(
+            this->get_logger(), *this->get_clock(), 1000,
+            "無法取得 TF 轉換 [world -> base_footprint]: %s", ex.what()
+        );
+        return false;
+    }
+
+    x_ = transform_stamped.transform.translation.x;
+    y_ = transform_stamped.transform.translation.y;
+    yaw_ = quat_to_yaw(transform_stamped.transform.rotation);
+    have_state_ = true;
+    return true;
+}
+
 void ChassisPilot::control_loop() {          
     // ---- 1. 安全與失明防線 ----
     if (!current_goal_handle_) {
@@ -81,8 +106,10 @@ void ChassisPilot::control_loop() {
         return;
     }
 
-    if (!have_state_) {
-        RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "卡關原因：完全沒收到 Odom 位置訊號！");
+    // 透過 TF 查詢當前車體位姿
+    if (!get_current_pose()) {
+        stop_robot();
+        RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "卡關原因：未取得 TF 位姿訊號！");
         return;
     }
 
@@ -146,15 +173,14 @@ void ChassisPilot::control_loop() {
     double v_final = 0.0;
 
     if (is_last_waypoint && strategy_ == MoveStrategy::SMOOTH_STOP && dist_to_goal_ < look_ahead_distance_) {
-        // ✨ 修改：進入緩衝區後，徹底拔掉斜率控制！
-        // 依照距離給予低速 (P控制)，或者你也可以直接寫死 v_final = 0.1;
+        // 進入緩衝區後，依照距離給予低速 (P控制)
         double kp_approach = 2.0; 
         double approach_v = kp_approach * dist_to_goal_;
 
         // 限制在保底最低速度與最高速度之間
         v_final = std::clamp(approach_v, min_v_, max_v_);
         
-        // ⚠️ 關鍵：強制同步歷史指令，直接讓速度「斷崖式」降下來，不經過平滑濾波
+        // 強制同步歷史指令
         last_v_cmd_ = v_final; 
     } 
     else {
@@ -165,7 +191,7 @@ void ChassisPilot::control_loop() {
         }
         v_limit = std::clamp(v_limit, 0.0, max_v_);
 
-        // 這裡依然保留遠距離的斜率限制，防止起步暴衝
+        // 保留遠距離的斜率限制，防止起步暴衝
         if (last_v_cmd_ < v_limit) {
             last_v_cmd_ = std::min(last_v_cmd_ + max_accel_ * dt, v_limit);
         } else {
@@ -184,30 +210,23 @@ void ChassisPilot::control_loop() {
     cmd.linear.x = v_final * std::cos(relative_dir);
     cmd.linear.y = v_final * std::sin(relative_dir);
 
-    // ---- 8. 角速度規劃 (全時段純 Kp 比例控制，徹底拔除斜率與根號公式) ----
-    
-    // 1. 設定你的比例增益與保底轉速（min_w_ 需大於 STM32 馬達死區）
-    double kp_yaw = 1.0;       // 角度 P 控制增益 (可依實車反應微調，通常設 2.0 ~ 3.5)
-    double max_w_limit = max_w_; // 轉速上限，直接採用當前點或 Action 帶入的限制
+    // ---- 8. 角速度規劃 (P 控制) ----
+    double kp_yaw = 1.0; 
+    double max_w_limit = max_w_; 
 
-    // 2. 計算純 P 控制的目標角速度
     double w_target = kp_yaw * yaw_to_goal_;
-
-    // 3. 限制最高轉速上限
     w_target = std::clamp(w_target, -max_w_limit, max_w_limit);
 
-    // 4. 終點死區與保底推力保護
+    // 終點死區與保底推力保護
     if (std::abs(w_target) < min_w_ && std::abs(yaw_to_goal_) > yaw_tol_) {
-        // 如果還沒進容許誤差，但算出來的速度太小，強迫給予保底推力轉正
         w_target = (yaw_to_goal_ > 0 ? 1.0 : -1.0) * min_w_;
     }
     else if (std::abs(yaw_to_goal_) <= yaw_tol_) {
-        // 只要進到容許誤差內，立刻關斷輸出
         w_target = 0.0;
     }
 
     cmd.angular.z = w_target;
-    last_w_cmd_ = w_target; // 同步狀態追蹤紀錄
+    last_w_cmd_ = w_target; 
 
     // 發布移動指令
     velocity_publisher_->publish(cmd);
@@ -238,7 +257,6 @@ void ChassisPilot::stop_robot() {
 
 void ChassisPilot::update_state() {
     dist_to_goal_ = std::hypot(goal_x_ - x_, goal_y_ - y_);
-    //yaw_to_goal_ = ang_norm(goal_yaw_ - yaw_);
     yaw_to_goal_ = ang_norm(goal_yaw_ - yaw_);
 }
 
@@ -250,13 +268,6 @@ double ChassisPilot::ang_norm(double a) {
 
 double ChassisPilot::quat_to_yaw(const geometry_msgs::msg::Quaternion & q) {
     return std::atan2(2.0 * (q.w * q.z + q.x * q.y), 1.0 - 2.0 * (q.y * q.y + q.z * q.z));
-}
-
-void ChassisPilot::position_callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
-    x_ = msg->pose.pose.position.x;
-    y_ = msg->pose.pose.position.y;
-    yaw_ = quat_to_yaw(msg->pose.pose.orientation);
-    have_state_ = true;
 }
 
 int main(int argc, char ** argv) {

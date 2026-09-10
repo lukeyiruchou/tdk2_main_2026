@@ -7,6 +7,9 @@
 #include <memory>
 #include <string>
 
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <geometry_msgs/msg/transform_stamped.hpp>
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "geometry_msgs/msg/twist.hpp"
@@ -52,12 +55,19 @@ private:
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr position_subscriber_;
     rclcpp_action::Server<NaviGoal>::SharedPtr action_server_;
     rclcpp::TimerBase::SharedPtr timer_;
+    //TF2
+    std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
+    std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
 
     // 狀態變數
     double x_{0}, y_{0}, yaw_{0};
     double last_v_cmd_{0};
     double last_w_cmd_{0}; // 用於梯形規劃加速段的指令追蹤
     bool have_state_{false};
+
+    // Frame 名稱參數（可彈性調整）
+    std::string global_frame_ = "world";
+    std::string base_frame_ = "base_footprint";
 
     // 目標與策略變數
     std::shared_ptr<GoalHandleNavi> current_goal_handle_;
@@ -78,7 +88,7 @@ private:
     double min_w_{0.01};
     
     double look_ahead_distance_{0.1};
-
+    bool get_current_pose();
     MoveStrategy strategy_{MoveStrategy::SMOOTH_STOP};
 };
 

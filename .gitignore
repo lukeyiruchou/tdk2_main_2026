@@ -1,6 +1,7 @@
 */build
 */install
 */log
+*/tdk_slam_ws
 /.vscode
 /src/CmakeLists.txt
 *.catkin_workspace

@@ -17,6 +17,9 @@ find_package(geometry_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/CustomWaypoint.msg"
@@ -33,6 +36,9 @@ ament_target_dependencies(chassis_pilot_node
   geometry_msgs
   nav_msgs
   std_msgs
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
 )
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 add_dependencies(chassis_pilot_node ${cpp_typesupport_target})
