@@ -194,7 +194,7 @@ private:
 
         auto goal_msg = NaviGoal::Goal();
         goal_msg.trajectory = waypoints;
-        goal_msg.max_angular_speed = 0.1;
+        goal_msg.max_angular_speed = 0.3;
         goal_msg.max_accel = 0.2;
         goal_msg.cruise_mode = false;
 
