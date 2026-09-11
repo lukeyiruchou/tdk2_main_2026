@@ -1,5 +1,5 @@
-#ifndef FSM_BASE_STATE_NODE_HPP_
-#define FSM_BASE_STATE_NODE_HPP_
+#ifndef FSM_NODE_HPP_
+#define FSM_NODE_HPP_
 
 #include <yaml-cpp/yaml.h>
 #include <map>
@@ -19,7 +19,7 @@
 
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
-// 引入你的自定義動作與訊息型態
+// 維持你原本的 chassis_pilot 介面
 #include "chassis_pilot/action/navi_goal.hpp"
 #include "chassis_pilot/msg/custom_waypoint.hpp"
 
@@ -53,9 +53,8 @@ public:
     CallbackReturn on_configure(const rclcpp_lifecycle::State &) override {
         RCLCPP_INFO(get_logger(), "--- [BaseStateNode] 正在執行通用配置 ---");
         
-        // 1. 建立進度與狀態發布者
+        // 1. 建立進度與狀態發布者（已移除 status_pub_）
         feedback_pub_ = this->create_publisher<std_msgs::msg::Float32>("~/progress", 10);
-        status_pub_ = this->create_publisher<std_msgs::msg::String>("~/current_state", 10);
         done_pub_ = this->create_publisher<std_msgs::msg::String>("/state_feedback", 10);
 
         arm_pub_    = this->create_publisher<std_msgs::msg::Int32>("robot/cmd_arm", 10);
@@ -77,7 +76,6 @@ public:
 
     CallbackReturn on_activate(const rclcpp_lifecycle::State &) override {
         feedback_pub_->on_activate();
-        status_pub_->on_activate();
         done_pub_->on_activate(); 
 
         arm_pub_->on_activate();
@@ -88,14 +86,11 @@ public:
         is_path_navigating_ = false;
         is_path_arrived_ = false;
 
-        publish_status("ACTIVED");
         return CallbackReturn::SUCCESS;
     }
 
     CallbackReturn on_deactivate(const rclcpp_lifecycle::State &) override {
-        publish_status("DEACTIVED");
         feedback_pub_->on_deactivate();
-        status_pub_->on_deactivate();
         done_pub_->on_deactivate(); 
         
         arm_pub_->on_deactivate();
@@ -116,11 +111,9 @@ protected:
         feedback_pub_->publish(msg); 
     }
 
-    // 工具函式：發送自定義狀態訊息
+    // 保留介面供子類呼叫，改為印 Log，不再發布 Topic，防止 DDS 報錯
     void publish_status(const std::string & status) {
-        auto msg = std_msgs::msg::String();
-        msg.data = status;
-        status_pub_->publish(msg);
+        RCLCPP_DEBUG(get_logger(), "State: %s", status.c_str());
     }
 
     // 讓 Manager 知道任務做完了
@@ -159,7 +152,7 @@ protected:
         RCLCPP_INFO(get_logger(), "🦾 [BaseStateNode] 發送手臂腳本: [%d]", script_id);
     }
 
-    //  子類點餐工具：控制進料吸取機構 (true: 放料/吸取, false: 收回)
+    // 子類點餐工具：控制進料吸取機構 (true: 放料/吸取, false: 收回)
     void set_intake_state(bool deploy) {
         auto msg = std_msgs::msg::Bool();
         msg.data = deploy;
@@ -271,7 +264,6 @@ private:
                 YAML::Node points_node;
 
                 if (path_node.IsMap() && path_node["points"]) {
-                    // 新格式： { planner: chassis_pilot|nav2, points: [...] }
                     std::string planner_str = path_node["planner"]
                         ? path_node["planner"].as<std::string>()
                         : "chassis_pilot";
@@ -280,7 +272,6 @@ private:
                         : PlannerType::CHASSIS_PILOT;
                     points_node = path_node["points"];
                 } else {
-                    // 舊格式：純陣列，向下相容，預設走 chassis_pilot
                     path_info.planner = PlannerType::CHASSIS_PILOT;
                     points_node = path_node;
                 }
@@ -362,9 +353,8 @@ private:
         }
     }
 
-    // 類別私有成員發布者
+    // 類別私有成員發布者（已移除 status_pub_）
     std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::Float32>> feedback_pub_;
-    std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::String>> status_pub_;
     std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::String>> done_pub_; 
 
     std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::Int32>> arm_pub_;
