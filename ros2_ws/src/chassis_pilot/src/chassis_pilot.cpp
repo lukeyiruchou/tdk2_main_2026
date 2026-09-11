@@ -100,22 +100,34 @@ bool ChassisPilot::get_current_pose() {
 
 void ChassisPilot::control_loop() {          
     // ---- 1. 安全與失明防線 ----
+
+
+
     if (!current_goal_handle_) {
-        stop_robot(); 
-        RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "待機中：無 Action 目標，底盤鎖定。");
+        // 只有剛從運動狀態轉為無任務時，送一次 0 速度讓車停下
+        if (!is_stopped_) {
+            stop_robot();
+            is_stopped_ = true;
+            RCLCPP_INFO(this->get_logger(), "軌跡結束或待機：發送最後停止指令，釋放底盤控制權。");
+        }
+        // 之後進入純待機，不再發布任何 /cmd_vel，避免覆蓋外部指令
         return;
     }
 
     // 透過 TF 查詢當前車體位姿
     if (!get_current_pose()) {
-        stop_robot();
+        if (!is_stopped_) {
+            stop_robot();
+            is_stopped_ = true;
+        }
         RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "卡關原因：未取得 TF 位姿訊號！");
         return;
     }
-
+    is_stopped_ = false;
     // ---- 2. 檢查任務是否被上層取消 ----
     if (current_goal_handle_->is_canceling()) {
         stop_robot();
+        is_stopped_ = true;
         current_goal_handle_->canceled(std::make_shared<NaviGoal::Result>());
         current_goal_handle_ = nullptr;
         RCLCPP_INFO(this->get_logger(), "軌跡任務已被成功取消。");
@@ -158,6 +170,7 @@ void ChassisPilot::control_loop() {
     // ---- 5. 軌跡終點完全抵達判定 ----
     if (is_last_waypoint && dist_to_goal_ < pos_tol_ && std::abs(yaw_to_goal_) < yaw_tol_) {
         stop_robot();
+        is_stopped_ = true;
         auto result = std::make_shared<NaviGoal::Result>();
         result->success = true;
         current_goal_handle_->succeed(result);

@@ -88,6 +88,7 @@ private:
     double min_w_{0.01};
     
     double look_ahead_distance_{0.1};
+    bool is_stopped_{true}; // 標記底盤目前是否已經處於停止狀態
     bool get_current_pose();
     MoveStrategy strategy_{MoveStrategy::SMOOTH_STOP};
 };
