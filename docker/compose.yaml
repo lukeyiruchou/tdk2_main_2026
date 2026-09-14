@@ -15,9 +15,10 @@ services:
     network_mode: host
     working_dir: /home/user/ros_tdk
     environment:
-      - DISPLAY=host.docker.internal:0.0cd
+      - DISPLAY=:0
       - XAUTHORITY=/root/.Xauthority
       - ROS_WS=/home/user/ros_tdk/ros2_ws
+      - ROS_DOMAIN_ID=67
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
