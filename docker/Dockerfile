@@ -36,6 +36,8 @@ RUN echo "source /opt/ros/humble/setup.bash" >> /etc/bash.bashrc \
 RUN apt-get update && apt-get dist-upgrade -y \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
+    && apt-get install -y ros-humble-rmw-cyclonedds-cpp \
+    ros-humble-nav2-msgs \
     && rm -rf /var/lib/apt/lists/*
 
 ENV SHELL=/bin/bash

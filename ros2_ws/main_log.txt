@@ -1,0 +1,178 @@
+[INFO] [launch]: All log files can be found below /home/user/.ros/log/2026-09-19-01-12-46-548824-dithub-9920
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [micro_ros_agent-1]: process started with pid [9932]
+[INFO] [chassis_pilot_node-2]: process started with pid [9934]
+[INFO] [main_ctrl_node-3]: process started with pid [9936]
+[INFO] [mission_one_node-4]: process started with pid [9938]
+[INFO] [mission_two_node-5]: process started with pid [9940]
+[INFO] [mission_three_node-6]: process started with pid [9942]
+[INFO] [mission_four_front_node-7]: process started with pid [9944]
+[INFO] [mission_four_back_node-8]: process started with pid [9946]
+[micro_ros_agent-1] [35m[1789751566.641362][m info     | [34mTermiosAgentLinux.cpp[m | [37minit                    [m | [32mrunning...[m             | fd: 3
+[micro_ros_agent-1] [35m[1789751566.641720][m info     | [34mRoot.cpp          [m | [37mset_verbose_level       [m | [32mlogger setup[m           | verbose_level: 4
+[main_ctrl_node-3] [INFO] [1789751566.652519582] [main_ctrl]: FSM Manager 已成功就緒。
+[main_ctrl_node-3] [INFO] [1789751566.652638932] [main_ctrl]: FSM Manager Node 啟動中...
+[chassis_pilot_node-2] [INFO] [1789751566.658006711] [chassis_pilot]: Chassis Pilot 已成功啟動！(座標系: world -> base_footprint)
+[micro_ros_agent-1] [35m[1789751566.728633][m info     | [34mRoot.cpp          [m | [37mcreate_client           [m | [32mcreate[m                 | client_key: 0x7C5DCBA7, session_id: 0x81
+[micro_ros_agent-1] [35m[1789751566.728686][m info     | [34mSessionManager.hpp[m | [37mestablish_session       [m | [32msession established[m    | client_key: 0x7C5DCBA7, address: 0
+[micro_ros_agent-1] [35m[1789751567.142132][m info     | [34mProxyClient.cpp   [m | [37mcreate_participant      [m | [32mparticipant created[m    | client_key: 0x7C5DCBA7, participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.149239][m info     | [34mProxyClient.cpp   [m | [37mcreate_topic            [m | [32mtopic created[m          | client_key: 0x7C5DCBA7, topic_id: 0x000(2), participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.155102][m info     | [34mProxyClient.cpp   [m | [37mcreate_publisher        [m | [32mpublisher created[m      | client_key: 0x7C5DCBA7, publisher_id: 0x000(3), participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.161927][m info     | [34mProxyClient.cpp   [m | [37mcreate_datawriter       [m | [32mdatawriter created[m     | client_key: 0x7C5DCBA7, datawriter_id: 0x000(5), publisher_id: 0x000(3)
+[micro_ros_agent-1] [35m[1789751567.169603][m info     | [34mProxyClient.cpp   [m | [37mcreate_topic            [m | [32mtopic created[m          | client_key: 0x7C5DCBA7, topic_id: 0x001(2), participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.175982][m info     | [34mProxyClient.cpp   [m | [37mcreate_publisher        [m | [32mpublisher created[m      | client_key: 0x7C5DCBA7, publisher_id: 0x001(3), participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.183643][m info     | [34mProxyClient.cpp   [m | [37mcreate_datawriter       [m | [32mdatawriter created[m     | client_key: 0x7C5DCBA7, datawriter_id: 0x001(5), publisher_id: 0x001(3)
+[micro_ros_agent-1] [35m[1789751567.191786][m info     | [34mProxyClient.cpp   [m | [37mcreate_topic            [m | [32mtopic created[m          | client_key: 0x7C5DCBA7, topic_id: 0x002(2), participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.197867][m info     | [34mProxyClient.cpp   [m | [37mcreate_subscriber       [m | [32msubscriber created[m     | client_key: 0x7C5DCBA7, subscriber_id: 0x000(4), participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.205281][m info     | [34mProxyClient.cpp   [m | [37mcreate_datareader       [m | [32mdatareader created[m     | client_key: 0x7C5DCBA7, datareader_id: 0x000(6), subscriber_id: 0x000(4)
+[micro_ros_agent-1] [35m[1789751567.213273][m info     | [34mProxyClient.cpp   [m | [37mcreate_topic            [m | [32mtopic created[m          | client_key: 0x7C5DCBA7, topic_id: 0x003(2), participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.219164][m info     | [34mProxyClient.cpp   [m | [37mcreate_subscriber       [m | [32msubscriber created[m     | client_key: 0x7C5DCBA7, subscriber_id: 0x001(4), participant_id: 0x000(1)
+[micro_ros_agent-1] [35m[1789751567.225886][m info     | [34mProxyClient.cpp   [m | [37mcreate_datareader       [m | [32mdatareader created[m     | client_key: 0x7C5DCBA7, datareader_id: 0x001(6), subscriber_id: 0x001(4)
+[main_ctrl_node-3] [INFO] [1789751567.652568033] [main_ctrl]: ⚙️ [系統初始化] 正在預先配置所有任務節點...
+[main_ctrl_node-3] [INFO] [1789751567.652837459] [main_ctrl]: 發送指令 1 給 mission_one_node
+[main_ctrl_node-3] [INFO] [1789751567.652884967] [main_ctrl]: 發送指令 1 給 mission_two_node
+[main_ctrl_node-3] [INFO] [1789751567.652913619] [main_ctrl]: 發送指令 1 給 mission_three_node
+[main_ctrl_node-3] [INFO] [1789751567.652943244] [main_ctrl]: 發送指令 1 給 mission_four_front_node
+[main_ctrl_node-3] [INFO] [1789751567.652979330] [main_ctrl]: 發送指令 1 給 mission_four_back_node
+[main_ctrl_node-3] [INFO] [1789751567.652987245] [main_ctrl]: ✅ [系統初始化] 5個任務節點已全數進入 Inactive 狀態，靜候指令。
+[mission_one_node-4] [INFO] [1789751567.653033841] [mission_one_node]: --- [BaseStateNode] 正在執行通用配置 ---
+[mission_three_node-6] [INFO] [1789751567.653062563] [mission_three_node]: --- [BaseStateNode] 正在執行通用配置 ---
+[mission_four_front_node-7] [INFO] [1789751567.653111764] [mission_four_front_node]: --- [BaseStateNode] 正在執行通用配置 ---
+[mission_four_back_node-8] [INFO] [1789751567.653136790] [mission_four_back_node]: --- [BaseStateNode] 正在執行通用配置 ---
+[mission_two_node-5] [INFO] [1789751567.653179078] [mission_two_node]: --- [BaseStateNode] 正在執行通用配置 ---
+[mission_three_node-6] [INFO] [1789751567.674067303] [mission_three_node]: [YAML] 成功載入路線: PATH_1_0 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674150326] [mission_three_node]: [YAML] 成功載入路線: PATH_1_1 (共 3 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674187324] [mission_three_node]: [YAML] 成功載入路線: PATH_2_0 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674204966] [mission_three_node]: [YAML] 成功載入路線: PATH_2_1 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674221527] [mission_three_node]: [YAML] 成功載入路線: PATH_2_2 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674241744] [mission_three_node]: [YAML] 成功載入路線: PATH_2_3 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674267281] [mission_three_node]: [YAML] 成功載入路線: PATH_2_4 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674283851] [mission_three_node]: [YAML] 成功載入路線: PATH_3_0 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674303267] [mission_three_node]: [YAML] 成功載入路線: PATH_3_1 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674331058] [mission_three_node]: [YAML] 成功載入路線: PATH_3_2 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674358128] [mission_three_node]: [YAML] 成功載入路線: PATH_3_3 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674383214] [mission_three_node]: [YAML] 成功載入路線: PATH_3_4 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674402960] [mission_three_node]: [YAML] 成功載入路線: PATH_3_5 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674427696] [mission_three_node]: [YAML] 成功載入路線: PATH_3_6 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674453383] [mission_three_node]: [YAML] 成功載入路線: PATH_3_7 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674468271] [mission_three_node]: [YAML] 成功載入路線: PATH_4f_0 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674487877] [mission_three_node]: [YAML] 成功載入路線: PATH_4f_1 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674501392] [mission_three_node]: [YAML] 成功載入路線: PATH_4f_2 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674515177] [mission_three_node]: [YAML] 成功載入路線: PATH_4b_0 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674528431] [mission_three_node]: [YAML] 成功載入路線: PATH_4b_1 (共 1 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674547136] [mission_three_node]: [YAML] 成功載入路線: PATH_4b_2 (共 2 個路徑點, planner=nav2)
+[mission_three_node-6] [INFO] [1789751567.674604171] [mission_three_node]: 正在配置3：載入動作序列庫...
+[mission_four_front_node-7] [INFO] [1789751567.674780115] [mission_four_front_node]: [YAML] 成功載入路線: PATH_1_0 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.674847108] [mission_four_front_node]: [YAML] 成功載入路線: PATH_1_1 (共 3 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.674875470] [mission_four_front_node]: [YAML] 成功載入路線: PATH_2_0 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.674894385] [mission_four_front_node]: [YAML] 成功載入路線: PATH_2_1 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.674913180] [mission_four_front_node]: [YAML] 成功載入路線: PATH_2_2 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.674931163] [mission_four_front_node]: [YAML] 成功載入路線: PATH_2_3 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.674963382] [mission_four_front_node]: [YAML] 成功載入路線: PATH_2_4 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.674984190] [mission_four_front_node]: [YAML] 成功載入路線: PATH_3_0 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675001472] [mission_four_front_node]: [YAML] 成功載入路線: PATH_3_1 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675025616] [mission_four_front_node]: [YAML] 成功載入路線: PATH_3_2 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675050793] [mission_four_front_node]: [YAML] 成功載入路線: PATH_3_3 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675077181] [mission_four_front_node]: [YAML] 成功載入路線: PATH_3_4 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675103760] [mission_four_front_node]: [YAML] 成功載入路線: PATH_3_5 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675131171] [mission_four_front_node]: [YAML] 成功載入路線: PATH_3_6 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675157269] [mission_four_front_node]: [YAML] 成功載入路線: PATH_3_7 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675176715] [mission_four_front_node]: [YAML] 成功載入路線: PATH_4f_0 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675202352] [mission_four_front_node]: [YAML] 成功載入路線: PATH_4f_1 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675220846] [mission_four_front_node]: [YAML] 成功載入路線: PATH_4f_2 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675239570] [mission_four_front_node]: [YAML] 成功載入路線: PATH_4b_0 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675257884] [mission_four_front_node]: [YAML] 成功載入路線: PATH_4b_1 (共 1 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675283030] [mission_four_front_node]: [YAML] 成功載入路線: PATH_4b_2 (共 2 個路徑點, planner=nav2)
+[mission_four_front_node-7] [INFO] [1789751567.675354362] [mission_four_front_node]: 正在配置4f：載入動作序列庫...
+[mission_four_back_node-8] [INFO] [1789751567.675433487] [mission_four_back_node]: [YAML] 成功載入路線: PATH_1_0 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675491905] [mission_four_back_node]: [YAML] 成功載入路線: PATH_1_1 (共 3 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675512583] [mission_four_back_node]: [YAML] 成功載入路線: PATH_2_0 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675529444] [mission_four_back_node]: [YAML] 成功載入路線: PATH_2_1 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675545493] [mission_four_back_node]: [YAML] 成功載入路線: PATH_2_2 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675560731] [mission_four_back_node]: [YAML] 成功載入路線: PATH_2_3 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675587541] [mission_four_back_node]: [YAML] 成功載入路線: PATH_2_4 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675603490] [mission_four_back_node]: [YAML] 成功載入路線: PATH_3_0 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675616845] [mission_four_back_node]: [YAML] 成功載入路線: PATH_3_1 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675640168] [mission_four_back_node]: [YAML] 成功載入路線: PATH_3_2 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675659613] [mission_four_back_node]: [YAML] 成功載入路線: PATH_3_3 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675678498] [mission_four_back_node]: [YAML] 成功載入路線: PATH_3_4 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675696622] [mission_four_back_node]: [YAML] 成功載入路線: PATH_3_5 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675714314] [mission_four_back_node]: [YAML] 成功載入路線: PATH_3_6 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675731957] [mission_four_back_node]: [YAML] 成功載入路線: PATH_3_7 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675747996] [mission_four_back_node]: [YAML] 成功載入路線: PATH_4f_0 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675768113] [mission_four_back_node]: [YAML] 成功載入路線: PATH_4f_1 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675782620] [mission_four_back_node]: [YAML] 成功載入路線: PATH_4f_2 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675801715] [mission_four_back_node]: [YAML] 成功載入路線: PATH_4b_0 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675820369] [mission_four_back_node]: [YAML] 成功載入路線: PATH_4b_1 (共 1 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675845165] [mission_four_back_node]: [YAML] 成功載入路線: PATH_4b_2 (共 2 個路徑點, planner=nav2)
+[mission_four_back_node-8] [INFO] [1789751567.675905436] [mission_four_back_node]: 正在配置4b：載入動作序列庫...
+[mission_one_node-4] [INFO] [1789751567.677539493] [mission_one_node]: [YAML] 成功載入路線: PATH_1_0 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677592511] [mission_one_node]: [YAML] 成功載入路線: PATH_1_1 (共 3 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677611596] [mission_one_node]: [YAML] 成功載入路線: PATH_2_0 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677627034] [mission_one_node]: [YAML] 成功載入路線: PATH_2_1 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677644316] [mission_one_node]: [YAML] 成功載入路線: PATH_2_2 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677657020] [mission_one_node]: [YAML] 成功載入路線: PATH_2_3 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677678599] [mission_one_node]: [YAML] 成功載入路線: PATH_2_4 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677691774] [mission_one_node]: [YAML] 成功載入路線: PATH_3_0 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677704587] [mission_one_node]: [YAML] 成功載入路線: PATH_3_1 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677721929] [mission_one_node]: [YAML] 成功載入路線: PATH_3_2 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677742998] [mission_one_node]: [YAML] 成功載入路線: PATH_3_3 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677760710] [mission_one_node]: [YAML] 成功載入路線: PATH_3_4 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677778694] [mission_one_node]: [YAML] 成功載入路線: PATH_3_5 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677803760] [mission_one_node]: [YAML] 成功載入路線: PATH_3_6 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677822604] [mission_one_node]: [YAML] 成功載入路線: PATH_3_7 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677835168] [mission_one_node]: [YAML] 成功載入路線: PATH_4f_0 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677852940] [mission_one_node]: [YAML] 成功載入路線: PATH_4f_1 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677866054] [mission_one_node]: [YAML] 成功載入路線: PATH_4f_2 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677881743] [mission_one_node]: [YAML] 成功載入路線: PATH_4b_0 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677897733] [mission_one_node]: [YAML] 成功載入路線: PATH_4b_1 (共 1 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677921166] [mission_one_node]: [YAML] 成功載入路線: PATH_4b_2 (共 2 個路徑點, planner=nav2)
+[mission_one_node-4] [INFO] [1789751567.677976047] [mission_one_node]: 正在配置：載入動作序列庫...
+[mission_two_node-5] [INFO] [1789751567.679411188] [mission_two_node]: [YAML] 成功載入路線: PATH_1_0 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679461070] [mission_two_node]: [YAML] 成功載入路線: PATH_1_1 (共 3 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679483211] [mission_two_node]: [YAML] 成功載入路線: PATH_2_0 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679497587] [mission_two_node]: [YAML] 成功載入路線: PATH_2_1 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679511793] [mission_two_node]: [YAML] 成功載入路線: PATH_2_2 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679525869] [mission_two_node]: [YAML] 成功載入路線: PATH_2_3 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679546688] [mission_two_node]: [YAML] 成功載入路線: PATH_2_4 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679563949] [mission_two_node]: [YAML] 成功載入路線: PATH_3_0 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679577685] [mission_two_node]: [YAML] 成功載入路線: PATH_3_1 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679597371] [mission_two_node]: [YAML] 成功載入路線: PATH_3_2 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679616005] [mission_two_node]: [YAML] 成功載入路線: PATH_3_3 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679633988] [mission_two_node]: [YAML] 成功載入路線: PATH_3_4 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679654606] [mission_two_node]: [YAML] 成功載入路線: PATH_3_5 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679673731] [mission_two_node]: [YAML] 成功載入路線: PATH_3_6 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679693027] [mission_two_node]: [YAML] 成功載入路線: PATH_3_7 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679706953] [mission_two_node]: [YAML] 成功載入路線: PATH_4f_0 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679725477] [mission_two_node]: [YAML] 成功載入路線: PATH_4f_1 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679739392] [mission_two_node]: [YAML] 成功載入路線: PATH_4f_2 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679753649] [mission_two_node]: [YAML] 成功載入路線: PATH_4b_0 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679767374] [mission_two_node]: [YAML] 成功載入路線: PATH_4b_1 (共 1 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679785998] [mission_two_node]: [YAML] 成功載入路線: PATH_4b_2 (共 2 個路徑點, planner=nav2)
+[mission_two_node-5] [INFO] [1789751567.679828677] [mission_two_node]: mission two configure
+[main_ctrl_node-3] [INFO] [1789752757.036517764] [main_ctrl]: 收到外部事件觸發請求: [Ev_GoToM2]
+[main_ctrl_node-3] [INFO] [1789752757.036891213] [main_ctrl]: 發送指令 3 給 mission_two_node
+[main_ctrl_node-3] [INFO] [1789752757.036905529] [main_ctrl]: 正在進行 mission_two_node 的初始設定...
+[mission_two_node-5] [INFO] [1789752757.037179119] [mission_two_node]: mission two activate
+[mission_two_node-5] [INFO] [1789752757.037648300] [mission_two_node]: [nav2] 正在發送 NavigateThroughPoses 目標，目標路線：[PATH_2_0]（共 2 點）
+[mission_one_node-4] [37;1m2026-09-19 01:32:37.038 [31;1m[[37;1mRTPS_READER_HISTORY[31;1m Error] [37mChange payload size of '32' bytes is larger than the history payload size of '19' bytes and cannot be resized.[34;1m -> Function [36mcan_change_be_added_nts[m
+[mission_three_node-6] [37;1m2026-09-19 01:32:37.038 [31;1m[[37;1mRTPS_READER_HISTORY[31;1m Error] [37mChange payload size of '32' bytes is larger than the history payload size of '19' bytes and cannot be resized.[34;1m -> Function [36mcan_change_be_added_nts[m
+[mission_two_node-5] [37;1m2026-09-19 01:32:37.038 [31;1m[[37;1mRTPS_READER_HISTORY[31;1m Error] [37mChange payload size of '32' bytes is larger than the history payload size of '19' bytes and cannot be resized.[34;1m -> Function [36mcan_change_be_added_nts[m
+[mission_four_front_node-7] [37;1m2026-09-19 01:32:37.038 [31;1m[[37;1mRTPS_READER_HISTORY[31;1m Error] [37mChange payload size of '32' bytes is larger than the history payload size of '19' bytes and cannot be resized.[34;1m -> Function [36mcan_change_be_added_nts[m
+[mission_four_back_node-8] [37;1m2026-09-19 01:32:37.038 [31;1m[[37;1mRTPS_READER_HISTORY[31;1m Error] [37mChange payload size of '32' bytes is larger than the history payload size of '19' bytes and cannot be resized.[34;1m -> Function [36mcan_change_be_added_nts[m
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[mission_three_node-6] [INFO] [1789752996.412079751] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [micro_ros_agent-1]: process has died [pid 9932, exit code -2, cmd '/home/user/ros_tdk/ros2_ws/install/micro_ros_agent/lib/micro_ros_agent/micro_ros_agent serial --dev /dev/ttyUSB2 -b 921600 --ros-args -r __node:=micro_ros_agent'].
+[INFO] [main_ctrl_node-3]: process has finished cleanly [pid 9936]
+[INFO] [chassis_pilot_node-2]: process has finished cleanly [pid 9934]
+[INFO] [mission_four_front_node-7]: process has finished cleanly [pid 9944]
+[INFO] [mission_four_back_node-8]: process has finished cleanly [pid 9946]
+[INFO] [mission_three_node-6]: process has finished cleanly [pid 9942]
+[INFO] [mission_two_node-5]: process has finished cleanly [pid 9940]
+[INFO] [mission_one_node-4]: process has finished cleanly [pid 9938]
+[mission_four_front_node-7] [INFO] [1789752996.412092123] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[main_ctrl_node-3] [INFO] [1789752996.412155858] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[mission_four_back_node-8] [INFO] [1789752996.412148836] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[chassis_pilot_node-2] [INFO] [1789752996.412392306] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[mission_two_node-5] [INFO] [1789752996.412512884] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[mission_one_node-4] [INFO] [1789752996.412999294] [rclcpp]: signal_handler(SIGINT/SIGTERM)

@@ -61,35 +61,99 @@ private:
 
         // 階段 2：當父類內置的 Action 接收到 Result 成功並點亮旗標後，觸發到站定點動作
         if (is_path_arrived_) {
-            if (progress_ < 0.1) {
-                progress_ += 0.1; // 
-                move_along_path("PATH_2_1");
-                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
-            } 
-            else if (progress_ < 0.2){
-                progress_ += 0.1;
-                move_along_path("PATH_2_2");
-                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+            if(is_mirrored_){
+                if (progress_ < 0.1) {
+                    progress_ += 0.1; // 
+                    move_along_path("PATH_2_1");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                } 
+                else if (progress_ < 0.2){
+                    progress_ += 0.1;
+                    move_along_path("PATH_2_2");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 0.3){
+                    progress_ += 0.1;
+                    move_along_path("PATH_2_3");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 0.4){
+                    progress_ += 0.1;
+                    move_along_path("PATH_2_4");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 1){
+                    progress_ += 0.1; // 
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                // 階段 3：定點任務也功德圓滿，切換到下一關 Lifecycle 狀態
+                else {
+                    RCLCPP_INFO(get_logger(), " Mission two complete！");
+                    timer_->cancel();
+                    notify_manager_done(); // 呼叫父類工具通知 Manager 關閉自己並開啟 MissionTwo
+                }
             }
-            else if (progress_ < 0.3){
-                progress_ += 0.1;
-                move_along_path("PATH_2_3");
-                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
-            }
-            else if (progress_ < 0.4){
-                progress_ += 0.1;
-                move_along_path("PATH_2_4");
-                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
-            }
-            else if (progress_ < 1){
-                progress_ += 0.1; // 
-                RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
-            }
-            // 階段 3：定點任務也功德圓滿，切換到下一關 Lifecycle 狀態
-            else {
-                RCLCPP_INFO(get_logger(), " Mission two complete！");
-                timer_->cancel();
-                notify_manager_done(); // 呼叫父類工具通知 Manager 關閉自己並開啟 MissionTwo
+            else{
+                if (progress_ < 0.05) {
+                    progress_ += 0.05; // 
+                    move_along_path("PATH_2_1_1");
+                }
+                else if (progress_ < 0.1){
+                    progress_ += 0.05;
+                    move_along_path("PATH_2_1_2");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                } 
+                else if (progress_ < 0.2){
+                    progress_ += 0.1;
+                    set_arm_state(200);
+                    move_along_path("PATH_2_2");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 0.3){
+                    progress_ += 0.05;
+                    set_arm_state(201);
+                    move_along_path("PATH_2_3_1");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 0.35){
+                    progress_ += 0.03;
+                    move_along_path("PATH_2_3_2");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 0.38){
+                    progress_ += 0.01;
+                    move_along_path("PATH_2_3_3");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 0.39){
+                    progress_ += 0.01;
+                    set_arm_state(202);
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (arm_status_ == 202){
+                    RCLCPP_INFO(get_logger(), "等待執行任務%d", arm_status_ );
+                }
+                else if (progress_ < 0.4){
+                    progress_ += 0.1;
+                    move_along_path("PATH_2_4");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 0.5){
+                    progress_ += 0.1;
+                    set_arm_state(203);
+                    move_along_path("PATH_2_5");
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                else if (progress_ < 1){
+                    progress_ += 0.1; // 
+                    RCLCPP_INFO(get_logger(), "車體已到站！正在執行任務... 進度: %.2f", progress_);
+                }
+                // 階段 3：定點任務也功德圓滿，切換到下一關 Lifecycle 狀態
+                else {
+                    RCLCPP_INFO(get_logger(), " Mission two complete！");
+                    timer_->cancel();
+                    notify_manager_done(); // 呼叫父類工具通知 Manager 關閉自己並開啟 MissionTwo
+                }
             }
         }
     }

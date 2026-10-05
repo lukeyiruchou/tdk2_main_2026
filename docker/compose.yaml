@@ -17,6 +17,7 @@ services:
     environment:
       - DISPLAY=:0
       - XAUTHORITY=/root/.Xauthority
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_WS=/home/user/ros_tdk/ros2_ws
       - ROS_DOMAIN_ID=67
     volumes:
